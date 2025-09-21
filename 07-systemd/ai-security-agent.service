@@ -1,0 +1,17 @@
+[Unit]
+Description=DevSecOps AI Security Agent
+After=network.target kafka.service elasticsearch.service influxdb.service neo4j.service clickhouse-server.service
+Requires=kafka.service elasticsearch.service
+
+[Service]
+Type=simple
+User=kafka
+Group=kafka
+WorkingDirectory=/opt/devsecops
+ExecStart=/usr/bin/python3 /opt/devsecops/ai_security_agent.py
+Restart=always
+RestartSec=30
+Environment=PYTHONPATH=/opt/devsecops
+
+[Install]
+WantedBy=multi-user.target

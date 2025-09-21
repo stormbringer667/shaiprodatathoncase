@@ -1,0 +1,54 @@
+---
+- name: Deploy DevSecOps AI Platform
+  hosts: localhost
+  become: yes
+
+  vars:
+    base_dir: "/opt"
+    dev_dir: "{{ base_dir }}/devsecops"
+
+  tasks:
+    - name: Ensure base directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - "{{ dev_dir }}"
+
+    - name: Copy Python apps
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ dev_dir }}/{{ item.dest }}"
+        mode: "0755"
+      loop:
+        - { src: "../06-python/honeypot_kafka_producer.py", dest: "honeypot_kafka_producer.py" }
+        - { src: "../06-python/firewall_kafka_producer.py",  dest: "firewall_kafka_producer.py" }
+        - { src: "../06-python/kafka_elasticsearch_consumer.py", dest: "kafka_elasticsearch_consumer.py" }
+        - { src: "../06-python/ai_security_agent.py", dest: "ai_security_agent.py" }
+
+    - name: Install systemd units
+      copy:
+        src: "{{ item.src }}"
+        dest: "/etc/systemd/system/{{ item.dest }}"
+        mode: "0644"
+      loop:
+        - { src: "../07-systemd/honeypot-kafka-producer.service", dest: "honeypot-kafka-producer.service" }
+        - { src: "../07-systemd/firewall-kafka-producer.service",  dest: "firewall-kafka-producer.service" }
+        - { src: "../07-systemd/elasticsearch-consumer.service",   dest: "elasticsearch-consumer.service" }
+        - { src: "../07-systemd/ai-security-agent.service",         dest: "ai-security-agent.service" }
+
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
+
+    - name: Enable & start services
+      systemd:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      loop:
+        - honeypot-kafka-producer
+        - firewall-kafka-producer
+        - elasticsearch-consumer
+        - ai-security-agent

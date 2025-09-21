@@ -1,0 +1,20 @@
+groups:
+  - name: security_events
+    rules:
+      - alert: HighThreatEvents
+        expr: rate(security_events_total{severity="critical"}[5m]) > 10
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High volume of critical security events"
+          description: "{{ $value }} critical events/sec (5m)"
+
+      - alert: AnomalousIPActivity
+        expr: increase(unique_source_ips[1h]) > 1000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Unusual IP activity detected"
+          description: "{{ $value }} unique source IPs in the last hour"

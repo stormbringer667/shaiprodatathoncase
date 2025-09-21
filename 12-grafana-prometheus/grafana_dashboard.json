@@ -1,0 +1,68 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "DevSecOps Security Monitoring",
+    "tags": [
+      "security",
+      "devsecops"
+    ],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Security Events Volume",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(security_events_total[5m])",
+            "legendFormat": "Events/sec"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "id": 2,
+        "title": "Threat Level Distribution",
+        "type": "piechart",
+        "targets": [
+          {
+            "expr": "sum by (threat_level) (security_events_total)"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        }
+      },
+      {
+        "id": 3,
+        "title": "Top Source IPs",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "topk(10, sum by (source_ip) (rate(security_events_total[1h])))",
+            "format": "table"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 8
+        }
+      }
+    ],
+    "time": {
+      "from": "now-24h",
+      "to": "now"
+    },
+    "refresh": "30s"
+  }
+}

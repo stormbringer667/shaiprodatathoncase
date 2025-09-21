@@ -1,0 +1,16 @@
+[Unit]
+Description=Kafka to Elasticsearch Consumer
+After=network.target kafka.service elasticsearch.service
+Requires=kafka.service elasticsearch.service
+
+[Service]
+Type=simple
+User=kafka
+Group=kafka
+WorkingDirectory=/opt/devsecops
+ExecStart=/usr/bin/python3 /opt/devsecops/kafka_elasticsearch_consumer.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

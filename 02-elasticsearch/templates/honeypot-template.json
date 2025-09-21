@@ -1,0 +1,25 @@
+{
+  "index_patterns": ["honeypot-*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 2,
+      "number_of_replicas": 0,
+      "index.codec": "best_compression"
+    },
+    "mappings": {
+      "properties": {
+        "timestamp":       {"type": "date"},
+        "source_ip":       {"type": "ip"},
+        "destination_ip":  {"type": "ip"},
+        "source_port":     {"type": "integer"},
+        "destination_port":{"type": "integer"},
+        "protocol":        {"type": "keyword"},
+        "honeypot_type":   {"type": "keyword"},
+        "attack_type":     {"type": "keyword"},
+        "severity":        {"type": "keyword"},
+        "raw_log":         {"type": "text"},
+        "geolocation":     {"type": "geo_point"}
+      }
+    }
+  }
+}

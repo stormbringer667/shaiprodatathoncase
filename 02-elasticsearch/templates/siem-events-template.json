@@ -1,0 +1,28 @@
+{
+  "index_patterns": ["siem-*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 3,
+      "number_of_replicas": 0
+    },
+    "mappings": {
+      "properties": {
+        "timestamp":      {"type": "date"},
+        "siem_vendor":    {"type": "keyword"},
+        "event_type":     {"type": "keyword"},
+        "severity":       {"type": "keyword"},
+        "confidence":     {"type": "float"},
+        "correlation_id": {"type": "keyword"},
+        "assets_affected":{"type": "keyword"},
+        "indicators": {
+          "type": "nested",
+          "properties": {
+            "type":       {"type": "keyword"},
+            "value":      {"type": "keyword"},
+            "confidence": {"type": "float"}
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "index_patterns": ["firewall-*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 3,
+      "number_of_replicas": 0
+    },
+    "mappings": {
+      "properties": {
+        "timestamp":       {"type": "date"},
+        "firewall_vendor": {"type": "keyword"},
+        "action":          {"type": "keyword"},
+        "source_ip":       {"type": "ip"},
+        "destination_ip":  {"type": "ip"},
+        "source_port":     {"type": "integer"},
+        "destination_port":{"type": "integer"},
+        "protocol":        {"type": "keyword"},
+        "bytes_sent":      {"type": "long"},
+        "bytes_received":  {"type": "long"},
+        "rule_name":       {"type": "keyword"},
+        "threat_category": {"type": "keyword"}
+      }
+    }
+  }
+}

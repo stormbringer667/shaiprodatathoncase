@@ -1,0 +1,16 @@
+[Unit]
+Description=Honeypot Kafka Producer
+After=network.target kafka.service
+Requires=kafka.service
+
+[Service]
+Type=simple
+User=kafka
+Group=kafka
+WorkingDirectory=/opt/devsecops
+ExecStart=/usr/bin/python3 /opt/devsecops/honeypot_kafka_producer.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

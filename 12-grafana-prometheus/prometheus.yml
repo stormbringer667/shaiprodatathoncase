@@ -1,0 +1,25 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "security_rules.yml"
+
+scrape_configs:
+  - job_name: 'kafka'
+    static_configs: [{ targets: ['localhost:9092'] }]
+  - job_name: 'elasticsearch'
+    static_configs: [{ targets: ['localhost:9200'] }]
+  - job_name: 'influxdb'
+    static_configs: [{ targets: ['localhost:8086'] }]
+  - job_name: 'clickhouse'
+    static_configs: [{ targets: ['localhost:8123'] }]
+  - job_name: 'neo4j'
+    static_configs: [{ targets: ['localhost:7474'] }]
+  - job_name: 'fluent-bit'
+    static_configs: [{ targets: ['localhost:2020'] }]
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['localhost:9093']
